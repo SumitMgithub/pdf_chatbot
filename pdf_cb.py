@@ -9,10 +9,10 @@ from langchain_community.vectorstores import FAISS
 import tempfile
 from PyPDF2 import PdfReader
 
-user_api_key = st.sidebar.text_input(
-    label="#### Your OpenAI API key 👇",
-    placeholder="Paste your openAI API key, sk-",
-    type="password")
+# user_api_key = st.sidebar.text_input(
+#     label="#### Your OpenAI API key 👇",
+#     placeholder="Paste your openAI API key, sk-",
+#     type="password")
 
 def process_pdf(file_path):
     pdf_reader = PdfReader(file_path)
