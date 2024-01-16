@@ -5,9 +5,7 @@ from streamlit_extras.add_vertical_space import add_vertical_space
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
-from langchain.document_loaders.csv_loader import CSVLoader
 from langchain_community.vectorstores import FAISS
-import tempfile
 from PyPDF2 import PdfReader
 
 with st.sidebar:
