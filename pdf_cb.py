@@ -20,7 +20,7 @@ with st.sidebar:
     - [OpenAI](https://platform.openai.com/docs/models) LLM model
 
     ''')
-    add_vertical_space(5)
+    add_vertical_space(2)
     st.write('Made by Sumit Malviya')
 
 def process_pdf(file_path):
