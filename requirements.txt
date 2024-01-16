@@ -1,0 +1,5 @@
+langchain==0.1.0
+langchain_community==0.0.12
+PyPDF2==3.0.1
+streamlit==1.29.0
+streamlit_chat==0.1.1
