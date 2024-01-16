@@ -9,10 +9,18 @@ from langchain_community.vectorstores import FAISS
 import tempfile
 from PyPDF2 import PdfReader
 
-# user_api_key = st.sidebar.text_input(
-#     label="#### Your OpenAI API key 👇",
-#     placeholder="Paste your openAI API key, sk-",
-#     type="password")
+with st.sidebar:
+    st.title('🤗💬 LLM Customs Chatbot')
+    st.markdown('''
+    ## About
+    This app is an LLM-powered chatbot built using:
+    - [Streamlit](https://streamlit.io/)
+    - [LangChain](https://python.langchain.com/)
+    - [OpenAI](https://platform.openai.com/docs/models) LLM model
+
+    ''')
+    add_vertical_space(5)
+    st.write('Made by Sumit Malviya')
 
 def process_pdf(file_path):
     pdf_reader = PdfReader(file_path)
