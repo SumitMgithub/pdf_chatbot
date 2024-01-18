@@ -28,6 +28,7 @@ def process_pdf(file_path):
         text += page.extract_text()
     return text
 
+# Enable the user to upload a file using Streamlit file uploader
 uploaded_file = st.sidebar.file_uploader("upload", type="pdf")
 
 if uploaded_file :
@@ -36,47 +37,63 @@ if uploaded_file :
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     chunks = splitter.split_text(text)
 
+    # Initialize embeddings, vectorstore, and chain for conversational retrieval
+    
     embeddings = OpenAIEmbeddings()
     vectorstore = FAISS.from_texts(texts=chunks, embedding=embeddings)
-
     chain = ConversationalRetrievalChain.from_llm(llm=ChatOpenAI(
                                                         temperature=0.0,
                                                         model_name='gpt-3.5-turbo'),
                                                   retriever=vectorstore.as_retriever())
 
-
+    # Initialize the chatbot session using Streamlit’s st.session_state['history'] method.
+    # This function takes a user query (user input) argument. 
+    # It then uses the chain to perform conversational chat. 
+    # The chain connects various components of a conversational chat system, like the question, answer, and chat history
+    
     def conversational_chat(query):
         result = chain({"question": query, "chat_history": st.session_state['history']})
         st.session_state['history'].append((query, result["answer"]))
-
         return result["answer"]
 
+    # check and initialize the session state variables if not present.
+    # This will display the initial messages in the chat. 
+    # If the state history is empty, the chatbot will prompt a “Hello” message and reply with “Hello! Ask me about file uploaded.” 
+    # Otherwise, the chatbot resumes from the last conversations.
+    
     if 'history' not in st.session_state:
         st.session_state['history'] = []
 
     if 'generated' not in st.session_state:
-        st.session_state['generated'] = ["Hello ! Ask me anything about " + uploaded_file.name + " 🤗"]
+        st.session_state['generated'] = ["Hello ! Ask me about " + uploaded_file.name + " 🤗"]
 
     if 'past' not in st.session_state:
         st.session_state['past'] = ["Hey ! 👋"]
 
+    # A Streamlit container is a feature that allows the grouping of multiple elements in a Streamlit app.
+    
     #container for the chat history
     response_container = st.container()
     #container for the user's text input
     container = st.container()
 
     with container:
+        
         with st.form(key='my_form', clear_on_submit=True):
+            # Retrieve user input via Streamlit text input
             user_input = st.text_input("Query:", placeholder="Talk about your pdf data here (:", key='input')
             submit_button = st.form_submit_button(label='Send')
 
         if submit_button and user_input:
+            # Call the conversational_chat function with user input and retrieve output
             output = conversational_chat(user_input)
 
+            # Update session state with user input and generated output
             st.session_state['past'].append(user_input)
             st.session_state['generated'].append(output)
 
     if st.session_state['generated']:
+        # Display chat history in the response container
         with response_container:
             for i in range(len(st.session_state['generated'])):
                 message(st.session_state["past"][i], is_user=True, key=str(i) + '_user', avatar_style="big-smile")
