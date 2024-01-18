@@ -60,15 +60,14 @@ if uploaded_file :
     # If the state history is empty, the chatbot will prompt a “Hello” message and reply with “Hello! Ask me about file uploaded.” 
     # Otherwise, the chatbot resumes from the last conversations. 
     
-    if 'past' not in st.session_state:
-        st.session_state['past'] = ["Hey ! 👋"]
-    
     if 'history' not in st.session_state:
         st.session_state['history'] = []
 
     if 'generated' not in st.session_state:
         st.session_state['generated'] = ["Hello ! Ask me about " + uploaded_file.name + " 🤗"]
 
+    if 'past' not in st.session_state:
+        st.session_state['past'] = ["Hey ! 👋"]
 
     # A Streamlit container is a feature that allows the grouping of multiple elements in a Streamlit app.
     
