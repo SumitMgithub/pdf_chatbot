@@ -38,6 +38,7 @@ if uploaded_file :
     chunks = splitter.split_text(text)
 
     # Initialize embeddings, vectorstore, and chain for conversational retrieval
+    # vectorstore is used to retrieve relevant information based on the user's input.
     
     embeddings = OpenAIEmbeddings()
     vectorstore = FAISS.from_texts(texts=chunks, embedding=embeddings)
@@ -46,11 +47,9 @@ if uploaded_file :
                                                         model_name='gpt-3.5-turbo'),
                                                   retriever=vectorstore.as_retriever())
 
-    # Initialize the chatbot session using Streamlit’s st.session_state['history'] method.
-    # This function takes a user query (user input) argument. 
-    # It then uses the chain to perform conversational chat. 
-    # The chain connects various components of a conversational chat system, like the question, answer, and chat history
-    
+    # Creating a function that accepts user query, feeds it into ConversationalRetrievalChain instance (i.e. chain), and returns the generated response
+    # It also keeps track of the conversation history, which is useful for creating more contextual responses. 
+     
     def conversational_chat(query):
         result = chain({"question": query, "chat_history": st.session_state['history']})
         st.session_state['history'].append((query, result["answer"]))
@@ -92,9 +91,9 @@ if uploaded_file :
             st.session_state['past'].append(user_input)
             st.session_state['generated'].append(output)
 
-    if st.session_state['generated']:
-        # Display chat history in the response container
-        with response_container:
-            for i in range(len(st.session_state['generated'])):
-                message(st.session_state["past"][i], is_user=True, key=str(i) + '_user', avatar_style="big-smile")
-                message(st.session_state["generated"][i], key=str(i), avatar_style="thumbs")
+    # if st.session_state['generated']:
+    #     # Display chat history in the response container
+    #     with response_container:
+    #         for i in range(len(st.session_state['generated'])):
+    #             message(st.session_state["past"][i], is_user=True, key=str(i) + '_user', avatar_style="big-smile")
+    #             message(st.session_state["generated"][i], key=str(i), avatar_style="thumbs")
