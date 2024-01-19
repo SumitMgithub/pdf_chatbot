@@ -8,8 +8,10 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain_community.vectorstores import FAISS
 from PyPDF2 import PdfReader
 
+st.title('LLM Custom Chatbot💬')
+
 with st.sidebar:
-    st.title('🤗💬 LLM Customs Chatbot')
+    
     st.markdown('''
     ## About
     This app is an LLM-powered chatbot built using:
