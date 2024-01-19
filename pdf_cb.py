@@ -86,11 +86,11 @@ if uploaded_file:
 
     with input_container:
 
-        # with st.form(key='my_form', clear_on_submit=True):
+        with st.form(key='my_form', clear_on_submit=True):
             # Capture user's input via Streamlit text_input
-        user_input = st.text_input("Query:", placeholder="Talk about your pdf data here: ", key='input')
-
-        submit_button = st.form_submit_button(label='Ask')
+            user_input = st.text_input("Query:", placeholder="Talk about your pdf data here: ", key='input')
+    
+            submit_button = st.form_submit_button(label='Ask')
 
         if submit_button and user_input:
             # Call the conversational_chat function with user input and retrieve output
