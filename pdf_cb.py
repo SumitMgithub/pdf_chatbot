@@ -70,20 +70,25 @@ if uploaded_file :
         st.session_state['past'] = ["Hey ! 👋"]
 
     # A Streamlit container is a feature that allows the grouping of multiple elements in a Streamlit app.
+    # Defining two containers using st.container().
     
-    #container for the chat history
+    # 1. container for the chat history
     response_container = st.container()
-    #container for the user's text input
-    container = st.container()
+    
+    # 2. container for the user's input
+    input_container = st.container()
 
-    with container:
+    with input_container:
         
         with st.form(key='my_form', clear_on_submit=True):
-            # Retrieve user input via Streamlit text input
-            user_input = st.text_input("Query:", placeholder="Talk about your pdf data here (:", key='input')
+            
+            # Capture user's input via Streamlit text_input
+            user_input = st.text_input("Query:", placeholder="Talk about your pdf data here: ", key='input')
+            
             submit_button = st.form_submit_button(label='Ask')
 
         if submit_button and user_input:
+            
             # Call the conversational_chat function with user input and retrieve output
             output = conversational_chat(user_input)
 
@@ -92,8 +97,10 @@ if uploaded_file :
             st.session_state['generated'].append(output)
 
     if st.session_state['generated']:
+        
         # Display chat history in the response container
         with response_container:
+            
             for i in range(len(st.session_state['generated'])):
                 message(st.session_state["past"][i], is_user=True, key=str(i) + '_user', avatar_style="big-smile")
                 message(st.session_state["generated"][i], key=str(i), avatar_style="thumbs")
